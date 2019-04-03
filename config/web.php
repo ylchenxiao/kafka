@@ -13,8 +13,8 @@ $config = [
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
+            'cookieValidationKey' => 'Nfc%ecv3',
+            'enableCsrfValidation' => false,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -43,15 +43,38 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        
         'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => require(__DIR__ . '/url-rules.php')
+        ],
+        //配置kafka生产者
+        'asyncLog' => [
+            'class' => '\\app\\models\\Kafka',
+            'broker_list' => '106.13.79.145:9092',
+            'topic' => 'asynclog'
+        ],
+        
+        /*'urlManager' => [
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:\w+>/<id:\d+>’=>’<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>’=>’<controller>/<action>',
+                '<controller:\w+>/<action:\w+>’=>’<controller>/<action>',
             ],
-        ],
-        */
+        ],*/
+        
     ],
+    'modules' => [
+        'kafka' => [
+            'class' => 'app\modules\kafka\Module',
+        ],
+    ],
+    
     'params' => $params,
 ];
 
